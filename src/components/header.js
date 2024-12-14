@@ -9,7 +9,7 @@ export default function Header() {
           <Image
             className="dark:invert"
             src="/data2innov_logo.jpeg"
-            alt="FHIR logo"
+            alt="DATA2INNOV logo"
             width={40}
             height={40}
           />

@@ -9,10 +9,10 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <Image
           className="dark:invert"
-          src="/data2innov_logo.jpeg"
+          src="/fhir_logo.png"
           alt="FHIR logo"
-          width={180}
-          height={38}
+          width={280}
+          height={138}
           priority
         />
         <h2 className="text-2xl font-bold text-center sm:text-left">
