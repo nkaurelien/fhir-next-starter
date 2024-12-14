@@ -1,0 +1,87 @@
+POST http://localhost:8080/fhir/Practitioner
+Content-Type: application/json
+Content-Length: 1412
+User-Agent: IntelliJ HTTP Client/WebStorm 2024.2.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "resourceType": "Practitioner",
+  "name": [
+    {
+      "use": "official",
+      "family": "Smith",
+      "given": ["Jane", "Elizabeth"]
+    }
+  ],
+  "gender": "female",
+  "birthDate": "1975-07-15",
+  "address": [
+    {
+      "use": "work",
+      "line": ["456 Elm St"],
+      "city": "Anytown",
+      "state": "CA",
+      "postalCode": "90210",
+      "country": "USA"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+1-555-987-6543",
+      "use": "work"
+    },
+    {
+      "system": "email",
+      "value": "jane.smith@example.com",
+      "use": "work"
+    }
+  ],
+  "identifier": [
+    {
+      "system": "http://hospital.smarthealth.org/practitioners",
+      "value": "789012"
+    }
+  ],
+  "qualification": [
+    {
+      "code": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0360",
+            "code": "MD",
+            "display": "Doctor of Medicine"
+          }
+        ],
+        "text": "Doctor of Medicine"
+      },
+      "period": {
+        "start": "2000-05-15"
+      },
+      "issuer": {
+        "display": "Anytown Medical Board"
+      }
+    }
+  ],
+  "communication": [
+    {
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en",
+            "display": "English"
+          }
+        ],
+        "text": "English"
+      },
+      "preferred": true
+    }
+  ]
+}
+
+<> 2024-12-14T164401.201.json
+
+###
+
