@@ -1,0 +1,68 @@
+### POST Request to create a Patient resource
+POST http://localhost:8080/fhir/Patient
+Content-Type: application/json
+
+{
+  "resourceType": "Patient",
+  "name": [
+    {
+      "use": "official",
+      "family": "Doe",
+      "given": ["John", "Alexander"]
+    }
+  ],
+  "gender": "male",
+  "birthDate": "1985-02-20",
+  "address": [
+    {
+      "use": "home",
+      "line": ["123 Main St"],
+      "city": "Anytown",
+      "state": "CA",
+      "postalCode": "90210",
+      "country": "USA"
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "+1-555-123-4567",
+      "use": "mobile"
+    },
+    {
+      "system": "email",
+      "value": "john.doe@example.com",
+      "use": "home"
+    }
+  ],
+  "identifier": [
+    {
+      "system": "http://hospital.smarthealth.org/patients",
+      "value": "123456"
+    }
+  ],
+  "maritalStatus": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+        "code": "M",
+        "display": "Married"
+      }
+    ]
+  },
+  "communication": [
+    {
+      "language": {
+        "coding": [
+          {
+            "system": "urn:ietf:bcp:47",
+            "code": "en",
+            "display": "English"
+          }
+        ],
+        "text": "English"
+      },
+      "preferred": true
+    }
+  ]
+}

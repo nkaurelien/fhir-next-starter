@@ -1,0 +1,44 @@
+{
+  "resourceType": "Patient",
+  "name": [
+    {
+      "use": "official",
+      "family": "rafrafi",
+      "given": ["abdelhalim"]
+    }
+  ],
+  "gender": "male",
+  "birthDate": null,
+  "email": "4oxu5ethqr@hellomailo.net",
+  "address": [
+    {
+      "use": "home",
+      "line": ["52 rue pierre et marie curie"],
+      "city": "viry châtillon",
+      "postalCode": "91170",
+      "country": null
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "0621704877"
+    },
+    {
+      "system": "email",
+      "value": "4oxu5ethqr@hellomailo.net"
+    }
+  ],
+  "generalPractitioner": [
+    {
+      "reference": "08529fd6727fa2e6fea59f897345bfde",
+      "activatedSpeciality": "Médecine du Sport",
+      "doctor_name": {
+        "family": "rafrafi",
+        "given": ["abdelhalim"]
+      }
+    }
+  ],
+  "scoreRemplissage": 100,
+  "loadedCarePlan": "fc5e732e70a95250e162aafeb60a5919"
+}
