@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AppConfig from "@/config";
 
-export default function PatientForm() {
+export default function PatientForm({ onPatientCreated }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -11,12 +11,41 @@ export default function PatientForm() {
     birthDate: '',
     address: '',
     phone: '',
-    email: ''
+    email: '',
+    practitioner: null, // Selected practitioner ID
   });
 
+  const [practitioners, setPractitioners] = useState([]); // List of practitioners
   const [responseMessage, setResponseMessage] = useState(null);
 
-  // Gestion des changements dans le formulaire
+  // Fetch practitioners from the HAPI FHIR API
+  useEffect(() => {
+    const fetchPractitioners = async () => {
+      try {
+        const response = await fetch(`${AppConfig.API_BASE_URL}/Practitioner`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Extract practitioner data from the response
+          const practitionerList = data.entry || [];
+          setPractitioners(practitionerList.map(entry => entry.resource));
+        } else {
+          console.error('Failed to fetch practitioners');
+        }
+      } catch (err) {
+        console.error('Error fetching practitioners:', err);
+      }
+    };
+
+    fetchPractitioners();
+  }, []);
+
+  // Handle form field changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -25,7 +54,16 @@ export default function PatientForm() {
     }));
   };
 
-  // Soumettre les données à l'API HAPI FHIR
+  // Handle practitioner selection
+  const handlePractitionerChange = (e) => {
+    const selectedPractitionerId = e.target.value || null;
+    setFormData((prevData) => ({
+      ...prevData,
+      practitioner: selectedPractitionerId,
+    }));
+  };
+
+  // Submit the form data to the FHIR API
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,6 +92,13 @@ export default function PatientForm() {
           value: formData.email,
         },
       ],
+      generalPractitioner: formData.practitioner
+        ? [
+            {
+              reference: `Practitioner/${formData.practitioner}`,
+            },
+          ]
+        : [],
     };
 
     try {
@@ -75,8 +120,13 @@ export default function PatientForm() {
           birthDate: '',
           address: '',
           phone: '',
-          email: ''
+          email: '',
+          practitioner: null,
         }); // Reset form
+
+        // Trigger list refresh
+        onPatientCreated();
+        
       } else {
         const errorData = await response.json();
         setResponseMessage(`Erreur: ${JSON.stringify(errorData)}`);
@@ -191,6 +241,25 @@ export default function PatientForm() {
             required
             className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="practitioner">
+            Praticien :
+          </label>
+          <select
+            name="practitioner"
+            id="practitioner"
+            value={formData.practitioner || ''}
+            onChange={handlePractitionerChange}
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          >
+            <option value="">-- Aucun praticien --</option>
+            {practitioners.map((practitioner) => (
+              <option key={practitioner.id} value={practitioner.id}>
+                {practitioner.name?.[0]?.given?.[0]} {practitioner.name?.[0]?.family}
+              </option>
+            ))}
+          </select>
         </div>
         <button
           type="submit"

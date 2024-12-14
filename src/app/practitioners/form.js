@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import AppConfig from "@/config";
 
-export default function PractitionerForm() {
+export default function PractitionerForm({ onPractitionerCreated }) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -74,6 +74,11 @@ export default function PractitionerForm() {
           phone: '',
           email: ''
         }); // Reset form
+
+
+        // Trigger list refresh
+        onPractitionerCreated();
+
       } else {
         const errorData = await response.json();
         setResponseMessage(`Erreur: ${JSON.stringify(errorData)}`);
