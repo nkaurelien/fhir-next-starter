@@ -1,12 +1,17 @@
-// pages/patient.js
+'use client'
+
 import { useState } from 'react';
+import AppConfig from "@/config";
 
 export default function PatientForm() {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
     gender: '',
-    birthDate: ''
+    birthDate: '',
+    address: '',
+    phone: '',
+    email: ''
   });
 
   const [responseMessage, setResponseMessage] = useState(null);
@@ -34,10 +39,25 @@ export default function PatientForm() {
       ],
       gender: formData.gender,
       birthDate: formData.birthDate,
+      address: [
+        {
+          line: [formData.address],
+        },
+      ],
+      telecom: [
+        {
+          system: 'phone',
+          value: formData.phone,
+        },
+        {
+          system: 'email',
+          value: formData.email,
+        },
+      ],
     };
 
     try {
-      const response = await fetch('http://localhost:8080/fhir/Patient', {
+      const response = await fetch(`${AppConfig.API_BASE_URL}/Patient`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -48,6 +68,15 @@ export default function PatientForm() {
       if (response.ok) {
         const data = await response.json();
         setResponseMessage(`Patient créé avec succès. ID: ${data.id}`);
+        setFormData({
+          firstName: '',
+          lastName: '',
+          gender: '',
+          birthDate: '',
+          address: '',
+          phone: '',
+          email: ''
+        }); // Reset form
       } else {
         const errorData = await response.json();
         setResponseMessage(`Erreur: ${JSON.stringify(errorData)}`);
@@ -58,10 +87,10 @@ export default function PatientForm() {
   };
 
   return (
-    <div className="flex flex-col items-center py-10">
-      <h1 className="text-2xl font-bold mb-6">Créer un Patient</h1>
-      <form onSubmit={handleSubmit} className="w-full max-w-md bg-white shadow-md rounded px-8 py-6">
-        <div className="mb-4">
+    <div>
+      <h2 className="text-2xl font-bold mb-4">Créer un Patient</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
             Prénom :
           </label>
@@ -72,10 +101,10 @@ export default function PatientForm() {
             value={formData.firstName}
             onChange={handleChange}
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
             Nom :
           </label>
@@ -86,10 +115,10 @@ export default function PatientForm() {
             value={formData.lastName}
             onChange={handleChange}
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gender">
             Genre :
           </label>
@@ -99,7 +128,7 @@ export default function PatientForm() {
             value={formData.gender}
             onChange={handleChange}
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           >
             <option value="">--Choisir--</option>
             <option value="male">Homme</option>
@@ -107,7 +136,7 @@ export default function PatientForm() {
             <option value="other">Autre</option>
           </select>
         </div>
-        <div className="mb-4">
+        <div>
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="birthDate">
             Date de naissance :
           </label>
@@ -118,19 +147,61 @@ export default function PatientForm() {
             value={formData.birthDate}
             onChange={handleChange}
             required
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
+            Adresse :
+          </label>
+          <input
+            type="text"
+            name="address"
+            id="address"
+            value={formData.address}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+            Téléphone :
+          </label>
+          <input
+            type="tel"
+            name="phone"
+            id="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+        <div>
+          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+            Email :
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
           />
         </div>
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-blue-300"
         >
           Soumettre
         </button>
       </form>
 
       {responseMessage && (
-        <div className="mt-6 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
+        <div className="mt-4 p-4 text-green-700 bg-green-100 border border-green-400 rounded">
           <strong>{responseMessage}</strong>
         </div>
       )}

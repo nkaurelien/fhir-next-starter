@@ -1,0 +1,10 @@
+{
+  "resourceType": "OperationOutcome",
+  "issue": [
+    {
+      "severity": "error",
+      "code": "processing",
+      "diagnostics": "HAPI-0505: Invalid resource reference found at path[Patient.generalPractitioner] - Does not contain resource type - 08529fd6727fa2e6fea59f897345bfde"
+    }
+  ]
+}

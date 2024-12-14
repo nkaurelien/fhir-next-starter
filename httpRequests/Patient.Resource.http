@@ -1,0 +1,5 @@
+### POST Request to create a Patient resource
+GET http://localhost:8080/fhir/Patient
+Content-Type: application/json
+
+{}
